@@ -171,6 +171,8 @@ public class CoordinateD
 	 
 	 @param x the x-coordinate
 	 @param y the y-coordinate
+	 
+	 @return an instance of 2D double coordinates
 	 */
 	public static CoordinateD create(double x, double y)
 	{
@@ -183,6 +185,8 @@ public class CoordinateD
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 @param z the z-coordinate
+	 
+	 @return an instance of 3D double coordinates
 	 */
 	public static CoordinateD create(double x, double y, double z)
 	{

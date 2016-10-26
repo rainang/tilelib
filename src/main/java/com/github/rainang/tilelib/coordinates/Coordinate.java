@@ -171,6 +171,8 @@ public class Coordinate
 	 
 	 @param x the x-coordinate
 	 @param y the y-coordinate
+	 
+	 @return an instance of 2D integer coordinates
 	 */
 	public static Coordinate create(int x, int y)
 	{
@@ -183,6 +185,8 @@ public class Coordinate
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 @param z the z-coordinate
+	 
+	 @return an instance of 3D integer coordinates
 	 */
 	public static Coordinate create(int x, int y, int z)
 	{

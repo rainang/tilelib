@@ -1,5 +1,5 @@
 group 'com.github.rainang.tilelib'
-version '0.1.0-Alpha'
+version '0.1.1-Alpha'
 
 apply plugin: 'java'
 
