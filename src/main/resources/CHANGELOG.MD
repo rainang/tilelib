@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [0.1.1-Alpha] - 2016-10-26
+## [1.0.0-alpha] - 2016-11-03
+### Added
+- Quad Layout
 
-## [0.1.0-Alpha] - 2016-10-26
+## [0.1.1-alpha] - 2016-10-26
+
+## [0.1.0-alpha] - 2016-10-26
 ### Added
 - Initial framework
