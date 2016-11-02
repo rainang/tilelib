@@ -23,7 +23,7 @@ public abstract class Layout<C extends Coordinate>
 	
 	public abstract CoordinateD toPixel(C c);
 	
-	public abstract Coordinate fromPixel(CoordinateD c);
+	public abstract C fromPixel(CoordinateD c);
 	
 	public CoordinateD corner(int corner)
 	{
