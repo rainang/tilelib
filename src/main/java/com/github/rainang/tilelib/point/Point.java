@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.coordinates;
+package com.github.rainang.tilelib.point;
 
 import java.util.Arrays;
 
@@ -6,13 +6,13 @@ import java.util.Arrays;
  An integer coordinate class. This is the base class for 2D and 3D integer coordinates. This class stores its
  coordinates in an integer array but is meant to be final.
  */
-public class Coordinate
+public class Point
 {
 	/** A 2D origin constant */
-	public static final Coordinate ORIGIN = Coordinate.create(0, 0);
+	public static final Point ORIGIN = Point.create(0, 0);
 	
 	/** A 3D origin constant */
-	public static final Coordinate ORIGIN_3 = Coordinate.create(0, 0, 0);
+	public static final Point ORIGIN_3 = Point.create(0, 0, 0);
 	
 	final int[] coords;
 	
@@ -21,7 +21,7 @@ public class Coordinate
 	 
 	 @param array the array containing the coordinates
 	 */
-	Coordinate(int[] array)
+	Point(int[] array)
 	{
 		this.coords = array;
 	}
@@ -32,7 +32,7 @@ public class Coordinate
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 */
-	Coordinate(int x, int y)
+	Point(int x, int y)
 	{
 		coords = new int[] {
 				x,
@@ -47,7 +47,7 @@ public class Coordinate
 	 @param y the y-coordinate
 	 @param z the z-coordinate
 	 */
-	Coordinate(int x, int y, int z)
+	Point(int x, int y, int z)
 	{
 		coords = new int[] {
 				x,
@@ -89,61 +89,61 @@ public class Coordinate
 	}
 	
 	/**
-	 Returns the <code>Coordinate</code> sum of this coordinate and <code>c</code>.
+	 Returns the <code>Point</code> sum of this coordinate and <code>c</code>.
 	 
-	 @param c the <code>Coordinate</code> to add
+	 @param c the <code>Point</code> to add
 	 
-	 @return the <code>Coordinate</code> sum of this coordinate and <code>c</code>
+	 @return the <code>Point</code> sum of this coordinate and <code>c</code>
 	 */
-	public Coordinate add(Coordinate c)
+	public Point add(Point c)
 	{
 		int[] array = new int[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] + c.coords[i];
-		return new Coordinate(array);
+		return new Point(array);
 	}
 	
 	/**
-	 Returns the <code>Coordinate</code> difference of this coordinate and <code>c</code>.
+	 Returns the <code>Point</code> difference of this coordinate and <code>c</code>.
 	 
-	 @param c the <code>Coordinate</code> to subtract
+	 @param c the <code>Point</code> to subtract
 	 
-	 @return the <code>Coordinate</code> difference of this coordinate and <code>c</code>
+	 @return the <code>Point</code> difference of this coordinate and <code>c</code>
 	 */
-	public Coordinate sub(Coordinate c)
+	public Point sub(Point c)
 	{
 		int[] array = new int[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] - c.coords[i];
-		return new Coordinate(array);
+		return new Point(array);
 	}
 	
 	/**
-	 Returns this <code>Coordinate</code> scaled to <code>s</code>.
+	 Returns this <code>Point</code> scaled to <code>s</code>.
 	 
 	 @param s the integer value to scale
 	 
-	 @return this <code>Coordinate</code> scaled to <code>s</code>.
+	 @return this <code>Point</code> scaled to <code>s</code>.
 	 */
-	public Coordinate mul(int s)
+	public Point mul(int s)
 	{
 		int[] array = new int[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] * s;
-		return new Coordinate(array);
+		return new Point(array);
 	}
 	
 	/**
-	 Returns a <code>CoordinateD</code> instance of this <code>Coordinate</code>.
+	 Returns a <code>PointD</code> instance of this <code>Point</code>.
 	 
-	 @return a <code>CoordinateD</code> instance of this <code>Coordinate</code>
+	 @return a <code>PointD</code> instance of this <code>Point</code>
 	 */
-	public CoordinateD asDouble()
+	public PointD asDouble()
 	{
 		double[] array = new double[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i];
-		return new CoordinateD(array);
+		return new PointD(array);
 	}
 	
 	@Override
@@ -157,13 +157,13 @@ public class Coordinate
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof Coordinate ? Arrays.equals(coords, ((Coordinate) o).coords) : super.equals(o);
+		return o instanceof Point ? Arrays.equals(coords, ((Point) o).coords) : super.equals(o);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Pt%s", Arrays.toString(coords));
+		return String.format("%s", Arrays.toString(coords));
 	}
 	
 	/**
@@ -174,9 +174,9 @@ public class Coordinate
 	 
 	 @return an instance of 2D integer coordinates
 	 */
-	public static Coordinate create(int x, int y)
+	public static Point create(int x, int y)
 	{
-		return new Coordinate(x, y);
+		return new Point(x, y);
 	}
 	
 	/**
@@ -188,8 +188,21 @@ public class Coordinate
 	 
 	 @return an instance of 3D integer coordinates
 	 */
-	public static Coordinate create(int x, int y, int z)
+	public static Point create(int x, int y, int z)
 	{
-		return new Coordinate(x, y, z);
+		return new Point(x, y, z);
+	}
+	
+	/**
+	 Constructs an instance of hex coordinates.
+	 
+	 @param x the x-coordinate
+	 @param y the y-coordinate
+	 
+	 @return an instance of hex coordinates
+	 */
+	public static Point createHex(int x, int y)
+	{
+		return new Point(x, y, -x - y);
 	}
 }

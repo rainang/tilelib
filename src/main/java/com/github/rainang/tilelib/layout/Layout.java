@@ -1,75 +1,75 @@
 package com.github.rainang.tilelib.layout;
 
-import com.github.rainang.tilelib.coordinates.Coordinate;
-import com.github.rainang.tilelib.coordinates.CoordinateD;
-import com.github.rainang.tilelib.coordinates.HexCoordinate;
+import com.github.rainang.tilelib.board.HexFinder;
+import com.github.rainang.tilelib.point.Point;
+import com.github.rainang.tilelib.point.PointD;
 
 import java.util.function.BiConsumer;
 
-public abstract class Layout<C extends Coordinate>
+public abstract class Layout
 {
-	public final CoordinateD size;
+	public final PointD size;
 	
-	public final CoordinateD origin;
+	public final PointD origin;
 	
-	final CoordinateD[] corners;
+	final PointD[] corners;
 	
-	public Layout(CoordinateD size, CoordinateD origin, int sides)
+	public Layout(PointD size, PointD origin, int sides)
 	{
 		this.size = size;
 		this.origin = origin;
-		this.corners = new CoordinateD[sides];
+		this.corners = new PointD[sides];
 	}
 	
-	public abstract CoordinateD toPixel(C c);
+	public abstract PointD toPixel(Point p);
 	
-	public abstract C fromPixel(CoordinateD c);
+	public abstract Point fromPixel(PointD p);
 	
-	public CoordinateD corner(int corner)
+	public PointD corner(int corner)
 	{
 		return corners[corner];
 	}
 	
-	public CoordinateD corner(CoordinateD c, int corner)
+	public PointD corner(PointD p, int corner)
 	{
-		return c.add(corner(corner));
+		return p.add(corner(corner));
 	}
 	
-	public void polygonCorners(C c, BiConsumer<CoordinateD, Integer> consumer)
+	public void polygonCorners(Point p, BiConsumer<PointD, Integer> consumer)
 	{
-		CoordinateD center = toPixel(c);
+		PointD center = toPixel(p);
 		for (int i = 0; i < 6; i++)
 			consumer.accept(corner(center, i), i);
 		consumer.accept(center, 6);
 	}
 	
-	public static class Quad extends Layout<Coordinate>
+	public static class Quad extends Layout
 	{
-		public Quad(CoordinateD size, CoordinateD origin)
+		public Quad(PointD size, PointD origin)
 		{
 			super(size, origin, 4);
-			corners[0] = CoordinateD.create(-size.x(), -size.y());
-			corners[1] = CoordinateD.create(size.x(), -size.y());
-			corners[2] = CoordinateD.create(size.x(), size.y());
-			corners[3] = CoordinateD.create(-size.x(), size.y());
+			corners[0] = PointD.create(-size.x(), -size.y());
+			corners[1] = PointD.create(size.x(), -size.y());
+			corners[2] = PointD.create(size.x(), size.y());
+			corners[3] = PointD.create(-size.x(), size.y());
 		}
 		
-		public CoordinateD toPixel(Coordinate c)
+		public PointD toPixel(Point p)
 		{
-			return CoordinateD.create(c.x() * size.x(), c.y() * size.y());
+			return PointD.create(p.x() * size.x(), p.y() * size.y());
 		}
 		
-		public Coordinate fromPixel(CoordinateD c)
+		public Point fromPixel(PointD p)
 		{
-			return Coordinate.create((int) (c.x() / size.x()), (int) (c.y() / size.y()));
+			return Point.create((int) (p.x() / size.x()), (int) (p.y() / size.y()));
 		}
 	}
 	
-	public static class Hex extends Layout<HexCoordinate>
+	public static class Hex extends Layout
 	{
 		public final HexOrientation orientation;
 		
-		public Hex(HexOrientation orientation, CoordinateD size, CoordinateD origin, double offset)
+		public Hex(HexOrientation orientation, PointD size, PointD origin, double offset)
 		{
 			super(size, origin, 6);
 			this.orientation = orientation;
@@ -108,28 +108,27 @@ public abstract class Layout<C extends Coordinate>
 							y -= d;
 					}
 				}
-				corners[i] = CoordinateD.create(x, y);
+				corners[i] = PointD.create(x, y);
 			}
 		}
 		
 		@Override
-		public CoordinateD toPixel(HexCoordinate hex)
+		public PointD toPixel(Point p)
 		{
-			double x = (orientation.f[0] * hex.x() + orientation.f[1] * hex.y()) * size.x() + origin.x();
-			double y = (orientation.f[2] * hex.x() + orientation.f[3] * hex.y()) * size.y() + origin.y();
+			double x = (orientation.f[0] * p.x() + orientation.f[1] * p.y()) * size.x() + origin.x();
+			double y = (orientation.f[2] * p.x() + orientation.f[3] * p.y()) * size.y() + origin.y();
 			
-			return CoordinateD.create(x, y);
+			return PointD.create(x, y);
 		}
 		
 		@Override
-		public HexCoordinate fromPixel(CoordinateD c)
+		public Point fromPixel(PointD p)
 		{
-			double x = (c.x() - origin.x()) / size.x();
-			double y = (c.y() - origin.y()) / size.y();
+			double x = (p.x() - origin.x()) / size.x();
+			double y = (p.y() - origin.y()) / size.y();
 			double q = orientation.b[0] * x + orientation.b[1] * y;
 			double r = orientation.b[2] * x + orientation.b[3] * y;
-			return HexCoordinate.create(q, r, -q - r)
-								.round();
+			return HexFinder.round(PointD.createHex(q, r));
 		}
 	}
 }

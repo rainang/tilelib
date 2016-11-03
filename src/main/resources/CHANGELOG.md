@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.0-alpha] - 2016-11-03
+### Added
+- Quad tile implementations
+- Board class replacing TileMap
+- Board builder
+
+### Changed
+- Renamed Coordinate classes to Point
+
+### Removed
+- Unnecessary HexCoordinate class
+- TileMap classes
+
 ## [1.0.1-alpha] - 2016-11-03
 
 ## [1.0.0-alpha] - 2016-11-03

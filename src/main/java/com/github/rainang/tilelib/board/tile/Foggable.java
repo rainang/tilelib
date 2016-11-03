@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.tiles;
+package com.github.rainang.tilelib.board.tile;
 
 public interface Foggable
 {

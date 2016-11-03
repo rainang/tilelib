@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.coordinates;
+package com.github.rainang.tilelib.point;
 
 import java.util.Arrays;
 
@@ -6,13 +6,13 @@ import java.util.Arrays;
  An double coordinate class. This is the base class for 2D and 3D double coordinates. This class stores its
  coordinates in a double array but is meant to be final.
  */
-public class CoordinateD
+public class PointD
 {
 	/** A 2D origin constant */
-	public static final CoordinateD ORIGIN = CoordinateD.create(0, 0);
+	public static final PointD ORIGIN = PointD.create(0, 0);
 	
 	/** A 3D origin constant */
-	public static final CoordinateD ORIGIN_3 = CoordinateD.create(0, 0, 0);
+	public static final PointD ORIGIN_3 = PointD.create(0, 0, 0);
 	
 	final double[] coords;
 	
@@ -21,7 +21,7 @@ public class CoordinateD
 	 
 	 @param array the array containing the coordinates
 	 */
-	CoordinateD(double[] array)
+	PointD(double[] array)
 	{
 		this.coords = array;
 	}
@@ -32,7 +32,7 @@ public class CoordinateD
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 */
-	CoordinateD(double x, double y)
+	PointD(double x, double y)
 	{
 		coords = new double[] {
 				x,
@@ -47,7 +47,7 @@ public class CoordinateD
 	 @param y the y-coordinate
 	 @param z the z-coordinate
 	 */
-	CoordinateD(double x, double y, double z)
+	PointD(double x, double y, double z)
 	{
 		coords = new double[] {
 				x,
@@ -89,61 +89,61 @@ public class CoordinateD
 	}
 	
 	/**
-	 Returns the <code>CoordinateD</code> sum of this coordinate and <code>c</code>.
+	 Returns the <code>PointD</code> sum of this coordinate and <code>c</code>.
 	 
-	 @param c the <code>CoordinateD</code> to add
+	 @param c the <code>PointD</code> to add
 	 
-	 @return the <code>CoordinateD</code> sum of this coordinate and <code>c</code>
+	 @return the <code>PointD</code> sum of this coordinate and <code>c</code>
 	 */
-	public CoordinateD add(CoordinateD c)
+	public PointD add(PointD c)
 	{
 		double[] array = new double[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] + c.coords[i];
-		return new CoordinateD(array);
+		return new PointD(array);
 	}
 	
 	/**
-	 Returns the <code>CoordinateD</code> difference of this coordinate and <code>c</code>.
+	 Returns the <code>PointD</code> difference of this coordinate and <code>c</code>.
 	 
-	 @param c the <code>CoordinateD</code> to subtract
+	 @param c the <code>PointD</code> to subtract
 	 
-	 @return the <code>CoordinateD</code> difference of this coordinate and <code>c</code>
+	 @return the <code>PointD</code> difference of this coordinate and <code>c</code>
 	 */
-	public CoordinateD sub(CoordinateD c)
+	public PointD sub(PointD c)
 	{
 		double[] array = new double[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] - c.coords[i];
-		return new CoordinateD(array);
+		return new PointD(array);
 	}
 	
 	/**
-	 Returns this <code>CoordinateD</code> scaled to <code>s</code>.
+	 Returns this <code>PointD</code> scaled to <code>s</code>.
 	 
 	 @param s the double value to scale
 	 
-	 @return this <code>CoordinateD</code> scaled to <code>s</code>.
+	 @return this <code>PointD</code> scaled to <code>s</code>.
 	 */
-	public CoordinateD mul(double s)
+	public PointD mul(double s)
 	{
 		double[] array = new double[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = coords[i] * s;
-		return new CoordinateD(array);
+		return new PointD(array);
 	}
 	
 	/**
-	 Returns a <code>Coordinate</code> instance of this <code>CoordinateD</code>.
+	 Returns a <code>Point</code> instance of this <code>PointD</code>.
 	 
-	 @return a <code>Coordinate</code> instance of this <code>CoordinateD</code>
+	 @return a <code>Point</code> instance of this <code>PointD</code>
 	 */
-	public Coordinate asInt()
+	public Point asInt()
 	{
 		int[] array = new int[coords.length];
 		for (int i = 0; i < array.length; i++)
 			array[i] = (int) coords[i];
-		return new Coordinate(array);
+		return new Point(array);
 	}
 	
 	@Override
@@ -157,13 +157,13 @@ public class CoordinateD
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof CoordinateD ? Arrays.equals(coords, ((CoordinateD) o).coords) : super.equals(o);
+		return o instanceof PointD ? Arrays.equals(coords, ((PointD) o).coords) : super.equals(o);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Pt%s", Arrays.toString(coords));
+		return String.format("%s", Arrays.toString(coords));
 	}
 	
 	/**
@@ -174,9 +174,9 @@ public class CoordinateD
 	 
 	 @return an instance of 2D double coordinates
 	 */
-	public static CoordinateD create(double x, double y)
+	public static PointD create(double x, double y)
 	{
-		return new CoordinateD(x, y);
+		return new PointD(x, y);
 	}
 	
 	/**
@@ -188,8 +188,21 @@ public class CoordinateD
 	 
 	 @return an instance of 3D double coordinates
 	 */
-	public static CoordinateD create(double x, double y, double z)
+	public static PointD create(double x, double y, double z)
 	{
-		return new CoordinateD(x, y, z);
+		return new PointD(x, y, z);
+	}
+	
+	/**
+	 Constructs an instance of double hex coordinates.
+	 
+	 @param x the x-coordinate
+	 @param y the y-coordinate
+	 
+	 @return an instance of double hex coordinates
+	 */
+	public static PointD createHex(double x, double y)
+	{
+		return new PointD(x, y, -x - y);
 	}
 }
