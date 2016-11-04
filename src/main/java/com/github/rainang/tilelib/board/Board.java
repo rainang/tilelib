@@ -3,6 +3,7 @@ package com.github.rainang.tilelib.board;
 import com.github.rainang.tilelib.board.tile.Tile;
 import com.github.rainang.tilelib.point.MutablePoint;
 import com.github.rainang.tilelib.point.Point;
+import com.github.rainang.tilelib.point.Points;
 
 import java.util.*;
 import java.util.function.Function;
@@ -118,6 +119,14 @@ public class Board<T extends Tile>
 			{
 				return new Board<>(getPoints(), tileSupplier);
 			}
+			
+			@Override
+			public boolean validateArena()
+			{
+				if (getPoints().removeIf(p -> !Points.isHexPoint(p)))
+					throw new IllegalStateException("Hex boards can only accept hex points");
+				return super.validateArena();
+			}
 		};
 	}
 	
@@ -142,6 +151,14 @@ public class Board<T extends Tile>
 			public B build()
 			{
 				return boardSupplier.apply(getPoints());
+			}
+			
+			@Override
+			public boolean validateArena()
+			{
+				if (getPoints().removeIf(p -> !Points.isHexPoint(p)))
+					throw new IllegalStateException("Hex boards can only accept hex points");
+				return super.validateArena();
 			}
 		};
 	}
