@@ -12,7 +12,7 @@ public class Board<T extends Tile>
 {
 	private final Map<Point, T> tileMap;
 	
-	Board(Set<Point> points, Function<Point, T> tileSupplier)
+	public Board(Set<Point> points, Function<Point, T> tileSupplier)
 	{
 		Map<Point, T> map = new HashMap<>();
 		points.forEach(c -> map.put(c, tileSupplier.apply(c)));
