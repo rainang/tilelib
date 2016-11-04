@@ -6,7 +6,7 @@ import com.github.rainang.tilelib.point.Point;
 
 import java.util.function.Consumer;
 
-public class QuadFinder extends TileFinder
+public class QuadFinder extends PointFinder
 {
 	public QuadFinder()
 	{

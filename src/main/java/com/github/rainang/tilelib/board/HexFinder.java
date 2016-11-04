@@ -7,7 +7,7 @@ import com.github.rainang.tilelib.point.PointD;
 
 import java.util.function.Consumer;
 
-public class HexFinder extends TileFinder
+public class HexFinder extends PointFinder
 {
 	public HexFinder()
 	{
