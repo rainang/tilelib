@@ -3,206 +3,177 @@ package com.github.rainang.tilelib.point;
 import java.util.Arrays;
 
 /**
- An double coordinate class. This is the base class for 2D and 3D double coordinates. This class stores its
- coordinates in a double array but is meant to be final.
+ An immutable point representing a location in 2- or 3-dimensional space, specified in double precision.
  */
 public class PointD
 {
-	/** A 2D origin constant */
-	public static final PointD ORIGIN = PointD.create(0, 0);
+	/** A constant for 2-dimensional point at <code>(0,0)</code> */
+	public static final PointD ORIGIN = create(0, 0);
 	
-	/** A 3D origin constant */
-	public static final PointD ORIGIN_3 = PointD.create(0, 0, 0);
+	/** A constant for 3-dimensional point at <code>(0,0,0)</code> */
+	public static final PointD ORIGIN_3 = create(0, 0, 0);
 	
-	final double[] coords;
+	final double[] array;
 	
-	/**
-	 Constructs double coordinates with the specified <code>array</code>.
-	 
-	 @param array the array containing the coordinates
-	 */
-	PointD(double[] array)
-	{
-		this.coords = array;
-	}
+	// CONSTRUCTORS
 	
 	/**
-	 Constructs an instance of 2D double coordinates.
+	 Constructs an immutable 2-dimensional point.
 	 
 	 @param x the x-coordinate
 	 @param y the y-coordinate
+	 
+	 @return an immutable 2-dimensional point
 	 */
-	PointD(double x, double y)
+	public static PointD create(double x, double y)
 	{
-		coords = new double[] {
+		return new PointD(new double[] {
 				x,
 				y
-		};
+		});
 	}
 	
 	/**
-	 Constructs an instance of 3D double coordinates.
+	 Constructs an immutable 3-dimensional point.
 	 
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 @param z the z-coordinate
+	 
+	 @return an immutable 3-dimensional point
 	 */
-	PointD(double x, double y, double z)
+	public static PointD create(double x, double y, double z)
 	{
-		coords = new double[] {
+		return new PointD(new double[] {
 				x,
 				y,
 				z
-		};
+		});
 	}
 	
 	/**
-	 Returns the x-coordinate.
+	 Constructs an immutable 3-dimensional hex point.
 	 
-	 @return the x-coordinate
+	 @param x the x-coordinate
+	 @param y the y-coordinate
+	 
+	 @return an immutable 3-dimensional hex point
 	 */
-	public double x()
+	public static PointD createHex(double x, double y)
 	{
-		return coords[0];
+		return new PointD(new double[] {
+				x,
+				y,
+				-x - y
+		});
 	}
 	
+	PointD(double[] array)
+	{
+		this.array = Arrays.copyOf(array, array.length);
+	}
+	
+	// VIEWS
+	
 	/**
-	 Returns the y-coordinate.
+	 Returns an immutable instance of this point.
 	 
-	 @return the y-coordinate
+	 @return an immutable instance of this point
 	 */
-	public double y()
+	public PointD asImmutable()
 	{
-		return coords[1];
+		return this;
 	}
 	
 	/**
-	 Returns the z-coordinate.
+	 Returns a mutable instance of this point.
 	 
-	 @return the z-coordinate
-	 
-	 @throws ArrayIndexOutOfBoundsException if no z-coordinate was specified on instantiation
+	 @return a mutable instance of this point
 	 */
-	public double z()
+	public MutablePointD asMutable()
 	{
-		return coords[2];
+		return new MutablePointD(array);
 	}
 	
 	/**
-	 Returns the <code>PointD</code> sum of this coordinate and <code>c</code>.
+	 Returns an immutable instance of this point in integer precision.
 	 
-	 @param c the <code>PointD</code> to add
-	 
-	 @return the <code>PointD</code> sum of this coordinate and <code>c</code>
-	 */
-	public PointD add(PointD c)
-	{
-		double[] array = new double[coords.length];
-		for (int i = 0; i < array.length; i++)
-			array[i] = coords[i] + c.coords[i];
-		return new PointD(array);
-	}
-	
-	/**
-	 Returns the <code>PointD</code> difference of this coordinate and <code>c</code>.
-	 
-	 @param c the <code>PointD</code> to subtract
-	 
-	 @return the <code>PointD</code> difference of this coordinate and <code>c</code>
-	 */
-	public PointD sub(PointD c)
-	{
-		double[] array = new double[coords.length];
-		for (int i = 0; i < array.length; i++)
-			array[i] = coords[i] - c.coords[i];
-		return new PointD(array);
-	}
-	
-	/**
-	 Returns this <code>PointD</code> scaled to <code>s</code>.
-	 
-	 @param s the double value to scale
-	 
-	 @return this <code>PointD</code> scaled to <code>s</code>.
-	 */
-	public PointD mul(double s)
-	{
-		double[] array = new double[coords.length];
-		for (int i = 0; i < array.length; i++)
-			array[i] = coords[i] * s;
-		return new PointD(array);
-	}
-	
-	/**
-	 Returns a <code>Point</code> instance of this <code>PointD</code>.
-	 
-	 @return a <code>Point</code> instance of this <code>PointD</code>
+	 @return an immutable instance of this point in integer precision
 	 */
 	public Point asInt()
 	{
-		int[] array = new int[coords.length];
+		int[] a = new int[array.length];
 		for (int i = 0; i < array.length; i++)
-			array[i] = (int) coords[i];
-		return new Point(array);
+			a[i] = (int) array[i];
+		return new Point(a);
 	}
+	
+	/**
+	 Returns a mutable instance of this point in integer precision.
+	 
+	 @return a mutable instance of this point in integer precision
+	 */
+	public MutablePoint asIntMutable()
+	{
+		int[] a = new int[array.length];
+		for (int i = 0; i < array.length; i++)
+			a[i] = (int) array[i];
+		return new MutablePoint(a);
+	}
+	
+	// GETTERS
+	
+	/**
+	 Returns the x-coordinate of this point.
+	 
+	 @return the x-coordinate of this point
+	 */
+	public double x()
+	{
+		return array[0];
+	}
+	
+	/**
+	 Returns the y-coordinate of this point.
+	 
+	 @return the y-coordinate of this point
+	 */
+	public double y()
+	{
+		return array[1];
+	}
+	
+	/**
+	 Returns the z-coordinate of this point.
+	 
+	 @return the z-coordinate of this point
+	 
+	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
+	 */
+	public double z()
+	{
+		return array[2];
+	}
+	
+	// OVERRIDES
 	
 	@Override
 	public int hashCode()
 	{
-		long bits = Double.doubleToLongBits(coords[0]);
-		bits ^= Double.doubleToLongBits(coords[1]) * 31;
+		long bits = Double.doubleToLongBits(array[0]);
+		bits ^= Double.doubleToLongBits(array[1]) * 31;
 		return (((int) bits) ^ ((int) (bits >> 32)));
 	}
 	
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof PointD ? Arrays.equals(coords, ((PointD) o).coords) : super.equals(o);
+		return o instanceof PointD ? Arrays.equals(array, ((PointD) o).array) : super.equals(o);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("%s", Arrays.toString(coords));
-	}
-	
-	/**
-	 Constructs an instance of 2D double coordinates.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return an instance of 2D double coordinates
-	 */
-	public static PointD create(double x, double y)
-	{
-		return new PointD(x, y);
-	}
-	
-	/**
-	 Constructs an instance of 3D double coordinates.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 @param z the z-coordinate
-	 
-	 @return an instance of 3D double coordinates
-	 */
-	public static PointD create(double x, double y, double z)
-	{
-		return new PointD(x, y, z);
-	}
-	
-	/**
-	 Constructs an instance of double hex coordinates.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return an instance of double hex coordinates
-	 */
-	public static PointD createHex(double x, double y)
-	{
-		return new PointD(x, y, -x - y);
+		return String.format("P%s", Arrays.toString(array));
 	}
 }

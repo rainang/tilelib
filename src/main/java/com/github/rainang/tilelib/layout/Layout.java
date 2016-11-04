@@ -1,6 +1,8 @@
 package com.github.rainang.tilelib.layout;
 
 import com.github.rainang.tilelib.board.HexFinder;
+import com.github.rainang.tilelib.point.MutablePoint;
+import com.github.rainang.tilelib.point.MutablePointD;
 import com.github.rainang.tilelib.point.Point;
 import com.github.rainang.tilelib.point.PointD;
 
@@ -21,26 +23,28 @@ public abstract class Layout
 		this.corners = new PointD[sides];
 	}
 	
-	public abstract PointD toPixel(Point p);
+	public abstract MutablePointD toPixel(Point p, MutablePointD dest);
 	
-	public abstract Point fromPixel(PointD p);
+	public abstract MutablePoint fromPixel(PointD p, MutablePoint dest);
 	
 	public PointD corner(int corner)
 	{
 		return corners[corner];
 	}
 	
-	public PointD corner(PointD p, int corner)
+	public MutablePointD corner(PointD p, int corner, MutablePointD dest)
 	{
-		return p.add(corner(corner));
+		return dest.set(p)
+				   .add(corner(corner));
 	}
 	
-	public void polygonCorners(Point p, BiConsumer<PointD, Integer> consumer)
+	public void polygonCorners(Point p, BiConsumer<Integer, MutablePointD> consumer)
 	{
-		PointD center = toPixel(p);
+		PointD pd = toPixel(p, p.asDoubleMutable());
+		MutablePointD temp = toPixel(p, p.asDoubleMutable());
 		for (int i = 0; i < 6; i++)
-			consumer.accept(corner(center, i), i);
-		consumer.accept(center, 6);
+			consumer.accept(i, corner(pd, i, temp));
+		consumer.accept(6, temp.set(pd));
 	}
 	
 	public static class Quad extends Layout
@@ -54,20 +58,25 @@ public abstract class Layout
 			corners[3] = PointD.create(-size.x(), size.y());
 		}
 		
-		public PointD toPixel(Point p)
+		@Override
+		public MutablePointD toPixel(Point p, MutablePointD dest)
 		{
-			return PointD.create(p.x() * size.x(), p.y() * size.y());
+			return dest.set(p.x() * size.x(), p.y() * size.y());
 		}
 		
-		public Point fromPixel(PointD p)
+		@Override
+		public MutablePoint fromPixel(PointD p, MutablePoint dest)
 		{
-			return Point.create((int) (p.x() / size.x()), (int) (p.y() / size.y()));
+			return dest.set((int) (p.x() / size.x()), (int) (p.y() / size.y()));
 		}
 	}
 	
 	public static class Hex extends Layout
 	{
+		private final MutablePointD temp = MutablePointD.create(0, 0, 0);
+		
 		public final HexOrientation orientation;
+		
 		
 		public Hex(HexOrientation orientation, PointD size, PointD origin, double offset)
 		{
@@ -108,27 +117,27 @@ public abstract class Layout
 							y -= d;
 					}
 				}
-				corners[i] = PointD.create(x, y);
+				corners[i] = PointD.create(x, y, -x - y);
 			}
 		}
 		
 		@Override
-		public PointD toPixel(Point p)
+		public MutablePointD toPixel(Point p, MutablePointD dest)
 		{
 			double x = (orientation.f[0] * p.x() + orientation.f[1] * p.y()) * size.x() + origin.x();
 			double y = (orientation.f[2] * p.x() + orientation.f[3] * p.y()) * size.y() + origin.y();
 			
-			return PointD.create(x, y);
+			return dest.set(x, y);
 		}
 		
 		@Override
-		public Point fromPixel(PointD p)
+		public MutablePoint fromPixel(PointD p, MutablePoint dest)
 		{
 			double x = (p.x() - origin.x()) / size.x();
 			double y = (p.y() - origin.y()) / size.y();
 			double q = orientation.b[0] * x + orientation.b[1] * y;
 			double r = orientation.b[2] * x + orientation.b[3] * y;
-			return HexFinder.round(PointD.createHex(q, r));
+			return HexFinder.round(temp.set(q, r, -q - r), dest);
 		}
 	}
 }

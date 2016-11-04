@@ -1,52 +1,79 @@
 package com.github.rainang.tilelib.board;
 
+import com.github.rainang.tilelib.board.tile.TileShape;
+import com.github.rainang.tilelib.point.MutablePoint;
+import com.github.rainang.tilelib.point.MutablePointD;
 import com.github.rainang.tilelib.point.Point;
+import com.github.rainang.tilelib.point.PointD;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public abstract class TileFinder
 {
-	protected abstract int sides();
+	public static final PointD EPSILON = PointD.createHex(1e-6, 1e-6);
 	
-	protected abstract Point[] getNeighbors();
+	private final TileShape tileShape;
+	
+	final MutablePoint[] temp = new MutablePoint[2];
+	
+	final MutablePointD[] tempD = new MutablePointD[3];
+	
+	TileFinder(TileShape tileShape)
+	{
+		this.tileShape = tileShape;
+		Arrays.setAll(temp, i -> MutablePoint.create(0, 0, 0));
+		Arrays.setAll(tempD, i -> MutablePointD.create(0, 0, 0));
+	}
+	
+	public TileShape getTileShape()
+	{
+		return tileShape;
+	}
 	
 	public int clamp(int direction)
 	{
-		return direction < 0 ? direction % sides() + sides() : direction % sides();
+		int i = direction % tileShape.getSides();
+		return direction < 0 ? i + tileShape.getSides() : i;
 	}
+	
+	// OFFSETS
 	
 	public Point offset(int direction)
 	{
-		return getNeighbors()[direction];
+		return getTileShape().getOffset(direction);
 	}
 	
-	public Point offset(Point p, int direction)
+	public MutablePoint offset(MutablePoint p, int direction)
 	{
 		return p.add(offset(direction));
 	}
 	
-	public Point offset(Point p, int direction, int distance)
+	public MutablePoint offset(MutablePoint p, int direction, int distance)
 	{
-		return p.add(offset(direction).mul(distance));
+		return p.add(offset(direction).asMutable()
+									  .scale(distance));
 	}
 	
-	public abstract void line(Point p1, Point p2, Consumer<Point> consumer);
+	// SHAPES
 	
-	public void parallelogram(Point p, int length1, int length2, int direction, Consumer<Point> consumer)
+	public abstract void line(Point p1, Point p2, Consumer<MutablePoint> consumer);
+	
+	public void parallelogram(Point p, int length1, int length2, int direction, Consumer<MutablePoint> consumer)
 	{
 		for (int i = 0; i <= length1; i++)
 		{
-			Point p1 = offset(p, direction, i);
-			consumer.accept(p1);
+			offset(temp[0].set(p), direction, i);
+			consumer.accept(temp[0]);
 			for (int j = 1; j <= length2; j++)
 			{
-				Point p2 = offset(p1, clamp(direction + 1), j);
-				consumer.accept(p2);
+				offset(temp[0], clamp(direction + 1));
+				consumer.accept(temp[0]);
 			}
 		}
 	}
 	
-	public abstract void fan(Point p, int length, int direction, Consumer<Point> consumer);
+	public abstract void fan(Point p, int length, int direction, Consumer<MutablePoint> consumer);
 	
-	public abstract void range(Point p, int length, Consumer<Point> consumer);
+	public abstract void range(Point p, int length, Consumer<MutablePoint> consumer);
 }

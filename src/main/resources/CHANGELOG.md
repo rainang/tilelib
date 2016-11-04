@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.0-alpha] - 2016-11-04
+### Added
+- TileShape class containing tile offset coordinates
+- MutablePoint classes to reduce object creation
+
+### Changed
+- Point classes into immutable points
+
 ## [2.0.0-alpha] - 2016-11-03
 ### Added
 - Quad tile implementations

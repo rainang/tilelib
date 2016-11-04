@@ -1,6 +1,7 @@
 package com.github.rainang.tilelib.board;
 
 import com.github.rainang.tilelib.board.tile.Tile;
+import com.github.rainang.tilelib.point.MutablePoint;
 import com.github.rainang.tilelib.point.Point;
 
 import java.util.*;
@@ -70,7 +71,7 @@ public class Board<T extends Tile>
 		
 		public boolean addCoordinate(Point point)
 		{
-			return points.add(point);
+			return points.add(point.asImmutable());
 		}
 		
 		public boolean removeCoordinate(Point point)
@@ -90,15 +91,17 @@ public class Board<T extends Tile>
 			
 			search.offer(coords.get(0));
 			
+			MutablePoint temp = coords.get(0)
+									  .asMutable();
 			while (!search.isEmpty())
 			{
-				Point hc = search.poll();
-				coords.remove(hc);
+				Point p = search.poll();
+				coords.remove(p);
 				for (int i = 0; i < 6; i++)
 				{
-					Point offset = finder.offset(hc, i);
-					if (!search.contains(offset) && coords.contains(offset))
-						search.offer(offset);
+					finder.offset(temp.set(p), i);
+					if (!search.contains(temp) && coords.contains(temp))
+						search.offer(temp.asImmutable());
 				}
 			}
 			
