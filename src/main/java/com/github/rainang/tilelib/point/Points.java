@@ -268,6 +268,54 @@ public final class Points
 	}
 	
 	/**
+	 * Returns true if point <code>p</code> is a 2-dimensional point.
+	 *
+	 * @param p the point to check
+	 *
+	 * @return true if point <code>p</code> is a 2-dimensional point
+	 */
+	public static boolean is2Dimensional(Point p)
+	{
+		return p.array.length == 2;
+	}
+	
+	/**
+	 * Returns true if point <code>p</code> is a 2-dimensional point.
+	 *
+	 * @param p the point to check
+	 *
+	 * @return true if point <code>p</code> is a 2-dimensional point
+	 */
+	public static boolean is2Dimensional(PointD p)
+	{
+		return p.array.length == 2;
+	}
+	
+	/**
+	 * Returns true if point <code>p</code> is a 3-dimensional point.
+	 *
+	 * @param p the point to check
+	 *
+	 * @return true if point <code>p</code> is a 3-dimensional point
+	 */
+	public static boolean is3Dimensional(Point p)
+	{
+		return p.array.length == 3;
+	}
+	
+	/**
+	 * Returns true if point <code>p</code> is a 3-dimensional point.
+	 *
+	 * @param p the point to check
+	 *
+	 * @return true if point <code>p</code> is a 3-dimensional point
+	 */
+	public static boolean is3Dimensional(PointD p)
+	{
+		return p.array.length == 3;
+	}
+	
+	/**
 	 * Returns true if point <code>p</code> is a hex point. More formally, this returns true if <code>x + y + z =
 	 * 0</code>.
 	 *
