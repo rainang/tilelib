@@ -19,6 +19,7 @@ public class MutablePointD extends PointD
 	 
 	 @return a mutable 2-dimensional point
 	 */
+	@Deprecated
 	public static MutablePointD create(double x, double y)
 	{
 		return new MutablePointD(new double[] {
@@ -36,6 +37,7 @@ public class MutablePointD extends PointD
 	 
 	 @return a mutable 3-dimensional point
 	 */
+	@Deprecated
 	public static MutablePointD create(double x, double y, double z)
 	{
 		return new MutablePointD(new double[] {
@@ -53,6 +55,7 @@ public class MutablePointD extends PointD
 	 
 	 @return a mutable 3-dimensional hex point
 	 */
+	@Deprecated
 	public static MutablePointD createHex(double x, double y)
 	{
 		return new MutablePointD(new double[] {
