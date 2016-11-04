@@ -24,7 +24,7 @@ public abstract class TileFinder
 	{
 		this.tileShape = tileShape;
 		Arrays.setAll(temp, i -> Points.mutableAt(0, 0, 0));
-		Arrays.setAll(tempD, i -> Points.mutableAt(0, 0, 0));
+		Arrays.setAll(tempD, i -> Points.mutableDoubleAt(0, 0, 0));
 	}
 	
 	public TileShape getTileShape()
