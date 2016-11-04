@@ -1,6 +1,7 @@
 package com.github.rainang.tilelib.layout;
 
 import com.github.rainang.tilelib.board.HexFinder;
+import com.github.rainang.tilelib.board.tile.TileShape;
 import com.github.rainang.tilelib.point.MutablePoint;
 import com.github.rainang.tilelib.point.MutablePointD;
 import com.github.rainang.tilelib.point.Point;
@@ -8,25 +9,86 @@ import com.github.rainang.tilelib.point.PointD;
 import com.github.rainang.tilelib.point.Points;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
-public abstract class Layout
+public final class Layout
 {
-	public final PointD size;
+	private final TileShape tileShape;
 	
-	public final PointD origin;
+	private final PointD size;
 	
-	final PointD[] corners;
+	private final PointD origin;
 	
-	public Layout(PointD size, PointD origin, int sides)
+	private final PointD[] corners;
+	
+	private final BiFunction<Point, MutablePointD, MutablePointD> toPixel;
+	
+	private final BiFunction<PointD, MutablePoint, MutablePoint> fromPixel;
+	
+	private final HexOrientation orientation;
+	
+	public Layout(PointD size, PointD origin)
 	{
+		this.tileShape = TileShape.QUAD;
 		this.size = size;
 		this.origin = origin;
-		this.corners = new PointD[sides];
+		this.corners = new PointD[] {
+				Points.doubleAt(-size.x(), -size.y()),
+				Points.doubleAt(size.x(), -size.y()),
+				Points.doubleAt(size.x(), size.y()),
+				Points.doubleAt(-size.x(), size.y())
+		};
+		this.toPixel = (p, dest) -> dest.set(p.x() * size.x(), p.y() * size.y());
+		this.fromPixel = (p, dest) -> dest.set((int) (p.x() / size.x()), (int) (p.y() / size.y()));
+		this.orientation = null;
 	}
 	
-	public abstract MutablePointD toPixel(Point p, MutablePointD dest);
+	public Layout(PointD size, PointD origin, HexOrientation orientation)
+	{
+		this.tileShape = TileShape.HEX;
+		this.size = size;
+		this.origin = origin;
+		this.corners = new PointD[6];
+		for (int i = 0; i < 6; i++)
+		{
+			double angle = Math.PI * (orientation.startAngle + i) / 3;
+			double x = size.x() * Math.cos(angle);
+			double y = size.y() * Math.sin(angle);
+			corners[i] = Points.doubleHexAt(x, y);
+		}
+		this.toPixel = (p, dest) ->
+		{
+			double x = (orientation.f[0] * p.x() + orientation.f[1] * p.y()) * size.x() + origin.x();
+			double y = (orientation.f[2] * p.x() + orientation.f[3] * p.y()) * size.y() + origin.y();
+			
+			return dest.set(x, y);
+		};
+		MutablePointD temp = Points.doubleOriginZ();
+		this.fromPixel = (p, dest) ->
+		{
+			double x = (p.x() - origin.x()) / size.x();
+			double y = (p.y() - origin.y()) / size.y();
+			double q = orientation.b[0] * x + orientation.b[1] * y;
+			double r = orientation.b[2] * x + orientation.b[3] * y;
+			return HexFinder.round(temp.set(q, r, -q - r), dest);
+		};
+		this.orientation = orientation;
+	}
 	
-	public abstract MutablePoint fromPixel(PointD p, MutablePoint dest);
+	public TileShape getTileShape()
+	{
+		return tileShape;
+	}
+	
+	public PointD getSize()
+	{
+		return size;
+	}
+	
+	public PointD getOrigin()
+	{
+		return origin;
+	}
 	
 	public PointD corner(int corner)
 	{
@@ -48,67 +110,18 @@ public abstract class Layout
 		consumer.accept(6, temp.set(pd));
 	}
 	
-	public static class Quad extends Layout
+	public MutablePointD toPixel(Point p, MutablePointD dest)
 	{
-		public Quad(PointD size, PointD origin)
-		{
-			super(size, origin, 4);
-			corners[0] = Points.doubleAt(-size.x(), -size.y());
-			corners[1] = Points.doubleAt(size.x(), -size.y());
-			corners[2] = Points.doubleAt(size.x(), size.y());
-			corners[3] = Points.doubleAt(-size.x(), size.y());
-		}
-		
-		@Override
-		public MutablePointD toPixel(Point p, MutablePointD dest)
-		{
-			return dest.set(p.x() * size.x(), p.y() * size.y());
-		}
-		
-		@Override
-		public MutablePoint fromPixel(PointD p, MutablePoint dest)
-		{
-			return dest.set((int) (p.x() / size.x()), (int) (p.y() / size.y()));
-		}
+		return toPixel.apply(p, dest);
 	}
 	
-	public static class Hex extends Layout
+	public MutablePoint fromPixel(PointD p, MutablePoint dest)
 	{
-		private final MutablePointD temp = Points.doubleOriginZ();
-		
-		public final HexOrientation orientation;
-		
-		public Hex(HexOrientation orientation, PointD size, PointD origin)
-		{
-			super(size, origin, 6);
-			this.orientation = orientation;
-			
-			for (int i = 0; i < 6; i++)
-			{
-				double angle = Math.PI * (orientation.startAngle + i) / 3;
-				double x = size.x() * Math.cos(angle);
-				double y = size.y() * Math.sin(angle);
-				corners[i] = Points.doubleHexAt(x, y);
-			}
-		}
-		
-		@Override
-		public MutablePointD toPixel(Point p, MutablePointD dest)
-		{
-			double x = (orientation.f[0] * p.x() + orientation.f[1] * p.y()) * size.x() + origin.x();
-			double y = (orientation.f[2] * p.x() + orientation.f[3] * p.y()) * size.y() + origin.y();
-			
-			return dest.set(x, y);
-		}
-		
-		@Override
-		public MutablePoint fromPixel(PointD p, MutablePoint dest)
-		{
-			double x = (p.x() - origin.x()) / size.x();
-			double y = (p.y() - origin.y()) / size.y();
-			double q = orientation.b[0] * x + orientation.b[1] * y;
-			double r = orientation.b[2] * x + orientation.b[3] * y;
-			return HexFinder.round(temp.set(q, r, -q - r), dest);
-		}
+		return fromPixel.apply(p, dest);
+	}
+	
+	public HexOrientation getOrientation()
+	{
+		return orientation;
 	}
 }
