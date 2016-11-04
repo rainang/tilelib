@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Points factory and utility class
+ 
+### Changed
+- All point classes to be instantiated through the Points class
 
 ## [3.0.0-alpha] - 2016-11-04
 ### Added

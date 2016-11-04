@@ -1,22 +1,23 @@
 package com.github.rainang.tilelib.board.tile;
 
 import com.github.rainang.tilelib.point.Point;
+import com.github.rainang.tilelib.point.Points;
 
 public enum TileShape
 {
 	QUAD(4, new Point[] {
-			Point.create(0, -1),
-			Point.create(1, 0),
-			Point.create(0, 1),
-			Point.create(-1, 0)
+			Points.at(0, -1),
+			Points.at(1, 0),
+			Points.at(0, 1),
+			Points.at(-1, 0)
 	}),
 	HEX(6, new Point[] {
-			Point.createHex(1, -1),
-			Point.createHex(1, 0),
-			Point.createHex(0, 1),
-			Point.createHex(-1, 1),
-			Point.createHex(-1, 0),
-			Point.createHex(0, -1)
+			Points.hexAt(1, -1),
+			Points.hexAt(1, 0),
+			Points.hexAt(0, 1),
+			Points.hexAt(-1, 1),
+			Points.hexAt(-1, 0),
+			Points.hexAt(0, -1)
 	});
 	
 	private final int sides;

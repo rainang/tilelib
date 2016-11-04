@@ -5,6 +5,7 @@ import com.github.rainang.tilelib.point.MutablePoint;
 import com.github.rainang.tilelib.point.MutablePointD;
 import com.github.rainang.tilelib.point.Point;
 import com.github.rainang.tilelib.point.PointD;
+import com.github.rainang.tilelib.point.Points;
 
 import java.util.function.BiConsumer;
 
@@ -52,10 +53,10 @@ public abstract class Layout
 		public Quad(PointD size, PointD origin)
 		{
 			super(size, origin, 4);
-			corners[0] = PointD.create(-size.x(), -size.y());
-			corners[1] = PointD.create(size.x(), -size.y());
-			corners[2] = PointD.create(size.x(), size.y());
-			corners[3] = PointD.create(-size.x(), size.y());
+			corners[0] = Points.doubleAt(-size.x(), -size.y());
+			corners[1] = Points.doubleAt(size.x(), -size.y());
+			corners[2] = Points.doubleAt(size.x(), size.y());
+			corners[3] = Points.doubleAt(-size.x(), size.y());
 		}
 		
 		@Override
@@ -73,7 +74,7 @@ public abstract class Layout
 	
 	public static class Hex extends Layout
 	{
-		private final MutablePointD temp = MutablePointD.create(0, 0, 0);
+		private final MutablePointD temp = Points.doubleOriginZ();
 		
 		public final HexOrientation orientation;
 		
@@ -117,7 +118,7 @@ public abstract class Layout
 							y -= d;
 					}
 				}
-				corners[i] = PointD.create(x, y, -x - y);
+				corners[i] = Points.doubleHexAt(x, y);
 			}
 		}
 		

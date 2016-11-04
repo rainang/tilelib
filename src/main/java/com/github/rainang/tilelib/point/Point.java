@@ -3,28 +3,33 @@ package com.github.rainang.tilelib.point;
 import java.util.Arrays;
 
 /**
- An immutable point representing a location in 2- or 3-dimensional space, specified in integer precision.
+ * An immutable point representing a location in 2- or 3-dimensional space, specified in integer precision.
+ *
+ * @see Points
  */
 public class Point
 {
-	/** A constant for 2-dimensional point at <code>(0,0)</code> */
-	public static final Point ORIGIN = create(0, 0);
+	public static final Point ORIGIN = Point.create(0, 0);
 	
-	/** A constant for 3-dimensional point at <code>(0,0,0)</code> */
-	public static final Point ORIGIN_3 = create(0, 0, 0);
+	/**
+	 * A constant for 3-dimensional point at <code>(0,0,0)</code>
+	 */
+	@Deprecated
+	public static final Point ORIGIN_3 = Point.create(0, 0, 0);
 	
 	final int[] array;
 	
 	// CONSTRUCTORS
 	
 	/**
-	 Constructs an immutable 2-dimensional point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return an immutable 2-dimensional point
+	 * Constructs an immutable 2-dimensional point.
+	 *
+	 * @param x the x-coordinate
+	 * @param y the y-coordinate
+	 *
+	 * @return an immutable 2-dimensional point
 	 */
+	@Deprecated
 	public static Point create(int x, int y)
 	{
 		return new Point(new int[] {
@@ -34,14 +39,15 @@ public class Point
 	}
 	
 	/**
-	 Constructs an immutable 3-dimensional point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 @param z the z-coordinate
-	 
-	 @return an immutable 3-dimensional point
+	 * Constructs an immutable 3-dimensional point.
+	 *
+	 * @param x the x-coordinate
+	 * @param y the y-coordinate
+	 * @param z the z-coordinate
+	 *
+	 * @return an immutable 3-dimensional point
 	 */
+	@Deprecated
 	public static Point create(int x, int y, int z)
 	{
 		return new Point(new int[] {
@@ -52,13 +58,14 @@ public class Point
 	}
 	
 	/**
-	 Constructs an immutable 3-dimensional hex point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return an immutable 3-dimensional hex point
+	 * Constructs an immutable 3-dimensional hex point.
+	 *
+	 * @param x the x-coordinate
+	 * @param y the y-coordinate
+	 *
+	 * @return an immutable 3-dimensional hex point
 	 */
+	@Deprecated
 	public static Point createHex(int x, int y)
 	{
 		return new Point(new int[] {
@@ -76,9 +83,9 @@ public class Point
 	// VIEWS
 	
 	/**
-	 Returns an immutable instance of this point.
-	 
-	 @return an immutable instance of this point
+	 * Returns an immutable instance of this point.
+	 *
+	 * @return an immutable instance of this point
 	 */
 	public Point asImmutable()
 	{
@@ -86,9 +93,9 @@ public class Point
 	}
 	
 	/**
-	 Returns a mutable instance of this point.
-	 
-	 @return a mutable instance of this point
+	 * Returns a mutable instance of this point.
+	 *
+	 * @return a mutable instance of this point
 	 */
 	public MutablePoint asMutable()
 	{
@@ -96,9 +103,9 @@ public class Point
 	}
 	
 	/**
-	 Returns an immutable instance of this point in double precision.
-	 
-	 @return an immutable instance of this point in double precision
+	 * Returns an immutable instance of this point in double precision.
+	 *
+	 * @return an immutable instance of this point in double precision
 	 */
 	public PointD asDouble()
 	{
@@ -109,9 +116,9 @@ public class Point
 	}
 	
 	/**
-	 Returns a mutable instance of this point in double precision.
-	 
-	 @return a mutable instance of this point in double precision
+	 * Returns a mutable instance of this point in double precision.
+	 *
+	 * @return a mutable instance of this point in double precision
 	 */
 	public MutablePointD asDoubleMutable()
 	{
@@ -124,9 +131,9 @@ public class Point
 	// GETTERS
 	
 	/**
-	 Returns the x-coordinate of this point.
-	 
-	 @return the x-coordinate of this point
+	 * Returns the x-coordinate of this point.
+	 *
+	 * @return the x-coordinate of this point
 	 */
 	public int x()
 	{
@@ -134,9 +141,9 @@ public class Point
 	}
 	
 	/**
-	 Returns the y-coordinate of this point.
-	 
-	 @return the y-coordinate of this point
+	 * Returns the y-coordinate of this point.
+	 *
+	 * @return the y-coordinate of this point
 	 */
 	public int y()
 	{
@@ -144,11 +151,11 @@ public class Point
 	}
 	
 	/**
-	 Returns the z-coordinate of this point.
-	 
-	 @return the z-coordinate of this point
-	 
-	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
+	 * Returns the z-coordinate of this point.
+	 *
+	 * @return the z-coordinate of this point
+	 *
+	 * @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
 	public int z()
 	{

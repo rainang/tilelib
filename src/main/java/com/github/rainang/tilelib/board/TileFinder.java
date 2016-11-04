@@ -5,13 +5,14 @@ import com.github.rainang.tilelib.point.MutablePoint;
 import com.github.rainang.tilelib.point.MutablePointD;
 import com.github.rainang.tilelib.point.Point;
 import com.github.rainang.tilelib.point.PointD;
+import com.github.rainang.tilelib.point.Points;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
 public abstract class TileFinder
 {
-	public static final PointD EPSILON = PointD.createHex(1e-6, 1e-6);
+	public static final PointD EPSILON = Points.doubleHexAt(1e-6, 1e-6);
 	
 	private final TileShape tileShape;
 	
@@ -22,8 +23,8 @@ public abstract class TileFinder
 	TileFinder(TileShape tileShape)
 	{
 		this.tileShape = tileShape;
-		Arrays.setAll(temp, i -> MutablePoint.create(0, 0, 0));
-		Arrays.setAll(tempD, i -> MutablePointD.create(0, 0, 0));
+		Arrays.setAll(temp, i -> Points.mutableAt(0, 0, 0));
+		Arrays.setAll(tempD, i -> Points.mutableAt(0, 0, 0));
 	}
 	
 	public TileShape getTileShape()

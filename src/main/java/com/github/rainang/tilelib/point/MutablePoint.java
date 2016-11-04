@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 /**
  A mutable point representing a location in 2- or 3-dimensional space, specified in integer precision.
+ *
+ * @see Points
  */
 public class MutablePoint extends Point
 {
