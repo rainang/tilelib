@@ -1,178 +1,89 @@
 package com.github.rainang.tilelib.board;
 
-import com.github.rainang.tilelib.board.tile.Tile;
-import com.github.rainang.tilelib.point.MutablePoint;
+import com.github.rainang.tilelib.board.tile.TileShape;
 import com.github.rainang.tilelib.point.Point;
-import com.github.rainang.tilelib.point.Points;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class Board<T extends Tile>
+public class Board
 {
-	private final Map<Point, T> tileMap;
+	private final TileShape shape;
 	
-	public Board(Set<Point> points, Function<Point, T> tileSupplier)
+	private final PointFinder finder;
+	
+	private final Set<Point> points;
+	
+	protected Board(BoardFactory factory)
 	{
-		Map<Point, T> map = new HashMap<>();
-		points.forEach(c -> map.put(c, tileSupplier.apply(c)));
-		tileMap = Collections.unmodifiableMap(map);
+		this.shape = factory.shape;
+		this.finder = factory.finder;
+		this.points = Collections.unmodifiableSet(new HashSet<>(factory.points));
 	}
 	
-	public Map<Point, T> getTileMap()
+	public TileShape getShape()
 	{
-		return tileMap;
+		return shape;
 	}
 	
-	public Set<Point> getCoordinates()
+	public PointFinder getFinder()
 	{
-		return tileMap.keySet();
+		return finder;
 	}
 	
-	public Collection<T> getTiles()
+	public Set<Point> getPoints()
 	{
-		return tileMap.values();
-	}
-	
-	public T getTile(Point pos)
-	{
-		return tileMap.get(pos);
+		return points;
 	}
 	
 	public boolean contains(Point pos)
 	{
-		return tileMap.containsKey(pos);
+		return points.contains(pos);
 	}
 	
-	public static abstract class Builder<T extends Tile, B extends Board<T>> implements javafx.util.Builder<B>
+	public class Layer<T>
 	{
-		private final TileFinder finder;
-		
-		private final Set<Point> points = new HashSet<>();
-		
-		Builder(TileFinder finder)
-		{
-			this.finder = finder;
-		}
-		
-		public TileFinder getFinder()
-		{
-			return finder;
-		}
-		
-		public boolean addCoordinates(Collection<Point> points)
-		{
-			return this.points.addAll(points);
-		}
-		
-		public boolean removeCoordinates(Collection<Point> points)
-		{
-			return this.points.removeAll(points);
-		}
-		
-		public boolean addCoordinate(Point point)
-		{
-			return points.add(point.asImmutable());
-		}
-		
-		public boolean removeCoordinate(Point point)
-		{
-			return points.remove(point);
-		}
+		private final Map<Point, T> map = new HashMap<>();
 		
 		public Set<Point> getPoints()
 		{
-			return Collections.unmodifiableSet(points);
+			return map.keySet();
 		}
 		
-		public boolean validateArena()
+		public Collection<T> getObjects()
 		{
-			List<Point> coords = new ArrayList<>(points);
-			Queue<Point> search = new ArrayDeque<>();
-			
-			search.offer(coords.get(0));
-			
-			MutablePoint temp = coords.get(0)
-									  .asMutable();
-			while (!search.isEmpty())
-			{
-				Point p = search.poll();
-				coords.remove(p);
-				for (int i = 0; i < 6; i++)
-				{
-					finder.offset(temp.set(p), i);
-					if (!search.contains(temp) && coords.contains(temp))
-						search.offer(temp.asImmutable());
-				}
-			}
-			
-			return coords.isEmpty();
+			return Collections.unmodifiableCollection(map.values());
 		}
-	}
-	
-	public static <T extends Tile> Board.Builder<T, Board<T>> defaultHexBuilder(Function<Point, T> tileSupplier)
-	{
-		return new Builder<T, Board<T>>(new HexFinder())
+		
+		public T getObject(Point pos)
 		{
-			@Override
-			public Board<T> build()
-			{
-				return new Board<>(getPoints(), tileSupplier);
-			}
-			
-			@Override
-			public boolean validateArena()
-			{
-				if (getPoints().removeIf(p -> !Points.isHexPoint(p)))
-					throw new IllegalStateException("Hex boards can only accept hex points");
-				return super.validateArena();
-			}
-		};
-	}
-	
-	public static <T extends Tile> Board.Builder<T, Board<T>> defaultQuadBuilder(Function<Point, T> tileSupplier)
-	{
-		return new Builder<T, Board<T>>(new QuadFinder())
+			return map.get(pos);
+		}
+		
+		public T putObject(Point pos, T obj)
 		{
-			@Override
-			public Board<T> build()
-			{
-				return new Board<>(getPoints(), tileSupplier);
-			}
-		};
-	}
-	
-	public static <B extends Board<T>, T extends Tile> Board.Builder<T, Board<T>> customHexBuilder
-			(Function<Set<Point>, B> boardSupplier)
-	{
-		return new Builder<T, Board<T>>(new HexFinder())
+			if (obj == null || !points.contains(pos))
+				return null;
+			return map.put(pos, obj);
+		}
+		
+		public T removeObject(Point pos)
 		{
-			@Override
-			public B build()
-			{
-				return boardSupplier.apply(getPoints());
-			}
-			
-			@Override
-			public boolean validateArena()
-			{
-				if (getPoints().removeIf(p -> !Points.isHexPoint(p)))
-					throw new IllegalStateException("Hex boards can only accept hex points");
-				return super.validateArena();
-			}
-		};
-	}
-	
-	public static <B extends Board<T>, T extends Tile> Board.Builder<T, Board<T>> customQuadBuilder
-			(Function<Set<Point>, B> boardSupplier)
-	{
-		return new Builder<T, Board<T>>(new QuadFinder())
+			return map.remove(pos);
+		}
+		
+		public boolean contains(Point pos)
 		{
-			@Override
-			public B build()
-			{
-				return boardSupplier.apply(getPoints());
-			}
-		};
+			return map.containsKey(pos);
+		}
+		
+		public boolean contains(T obj)
+		{
+			return map.containsValue(obj);
+		}
 	}
 }
