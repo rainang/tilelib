@@ -78,8 +78,7 @@ public abstract class Layout
 		
 		public final HexOrientation orientation;
 		
-		
-		public Hex(HexOrientation orientation, PointD size, PointD origin, double offset)
+		public Hex(HexOrientation orientation, PointD size, PointD origin)
 		{
 			super(size, origin, 6);
 			this.orientation = orientation;
@@ -89,35 +88,6 @@ public abstract class Layout
 				double angle = Math.PI * (orientation.startAngle + i) / 3;
 				double x = size.x() * Math.cos(angle);
 				double y = size.y() * Math.sin(angle);
-				
-				if (offset != 0)
-				{
-					if (orientation == HexOrientation.POINTY)
-					{
-						double d = size.x() < 0 ? -offset : offset;
-						if (i == 0 || i == 5)
-							x += d;
-						else if (i == 2 || i == 3)
-							x -= d;
-						d = size.y() < 0 ? -offset : offset;
-						if (i == 0 || i == 1 || i == 2)
-							y += d;
-						else
-							y -= d;
-					} else
-					{
-						double d = size.x() < 0 ? -offset : offset;
-						if (i == 0 || i == 1 || i == 5)
-							x += d;
-						else
-							x -= d;
-						d = size.y() < 0 ? -offset : offset;
-						if (i == 1 || i == 2)
-							y += d;
-						else if (i == 4 || i == 5)
-							y -= d;
-					}
-				}
 				corners[i] = Points.doubleHexAt(x, y);
 			}
 		}
