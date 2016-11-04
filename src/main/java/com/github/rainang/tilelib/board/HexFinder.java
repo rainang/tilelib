@@ -23,7 +23,6 @@ public class HexFinder extends TileFinder
 				.add(p2);
 		
 		int n = distance(p1, p2);
-		System.out.println(n);
 		double step = 1D / Math.max(n, 1);
 		for (int i = 0; i <= n; i++)
 		{
