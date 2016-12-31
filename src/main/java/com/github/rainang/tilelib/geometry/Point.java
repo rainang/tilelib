@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.point;
+package com.github.rainang.tilelib.geometry;
 
 import java.util.Arrays;
 
@@ -9,71 +9,9 @@ import java.util.Arrays;
  */
 public class Point
 {
-	public static final Point ORIGIN = Point.create(0, 0);
-	
-	/**
-	 * A constant for 3-dimensional point at <code>(0,0,0)</code>
-	 */
-	@Deprecated
-	public static final Point ORIGIN_3 = Point.create(0, 0, 0);
-	
 	final int[] array;
 	
 	// CONSTRUCTORS
-	
-	/**
-	 * Constructs an immutable 2-dimensional point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 *
-	 * @return an immutable 2-dimensional point
-	 */
-	@Deprecated
-	public static Point create(int x, int y)
-	{
-		return new Point(new int[] {
-				x,
-				y
-		});
-	}
-	
-	/**
-	 * Constructs an immutable 3-dimensional point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 * @param z the z-coordinate
-	 *
-	 * @return an immutable 3-dimensional point
-	 */
-	@Deprecated
-	public static Point create(int x, int y, int z)
-	{
-		return new Point(new int[] {
-				x,
-				y,
-				z
-		});
-	}
-	
-	/**
-	 * Constructs an immutable 3-dimensional hex point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 *
-	 * @return an immutable 3-dimensional hex point
-	 */
-	@Deprecated
-	public static Point createHex(int x, int y)
-	{
-		return new Point(new int[] {
-				x,
-				y,
-				-x - y
-		});
-	}
 	
 	Point(int[] array)
 	{
@@ -164,6 +102,7 @@ public class Point
 	
 	// OVERRIDES
 	
+	// TODO: 2016-12-31 Fix hashing for 3-dimensional point
 	@Override
 	public int hashCode()
 	{

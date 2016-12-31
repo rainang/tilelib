@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.point;
+package com.github.rainang.tilelib.geometry;
 
 import java.util.Arrays;
 
@@ -9,75 +9,9 @@ import java.util.Arrays;
  */
 public class PointD
 {
-	/**
-	 * A constant for 2-dimensional point at <code>(0,0)</code>
-	 */
-	@Deprecated
-	public static final PointD ORIGIN = create(0, 0);
-	
-	/**
-	 * A constant for 3-dimensional point at <code>(0,0,0)</code>
-	 */
-	@Deprecated
-	public static final PointD ORIGIN_3 = create(0, 0, 0);
-	
 	final double[] array;
 	
 	// CONSTRUCTORS
-	
-	/**
-	 * Constructs an immutable 2-dimensional point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 *
-	 * @return an immutable 2-dimensional point
-	 */
-	@Deprecated
-	public static PointD create(double x, double y)
-	{
-		return new PointD(new double[] {
-				x,
-				y
-		});
-	}
-	
-	/**
-	 * Constructs an immutable 3-dimensional point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 * @param z the z-coordinate
-	 *
-	 * @return an immutable 3-dimensional point
-	 */
-	@Deprecated
-	public static PointD create(double x, double y, double z)
-	{
-		return new PointD(new double[] {
-				x,
-				y,
-				z
-		});
-	}
-	
-	/**
-	 * Constructs an immutable 3-dimensional hex point.
-	 *
-	 * @param x the x-coordinate
-	 * @param y the y-coordinate
-	 *
-	 * @return an immutable 3-dimensional hex point
-	 */
-	@Deprecated
-	public static PointD createHex(double x, double y)
-	{
-		return new PointD(new double[] {
-				x,
-				y,
-				-x - y
-		});
-	}
 	
 	PointD(double[] array)
 	{
@@ -168,6 +102,7 @@ public class PointD
 	
 	// OVERRIDES
 	
+	// TODO: 2016-12-31 Fix hashing for 3-dimensional point
 	@Override
 	public int hashCode()
 	{

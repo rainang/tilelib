@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.point;
+package com.github.rainang.tilelib.geometry;
 
 /**
  * This class consists exclusively of static factory and utility methods for all point classes.
@@ -27,7 +27,7 @@ public final class Points
 	/**
 	 * An immutable 3-dimensional integer point origin constant
 	 */
-	public static final Point ORIGIN_Z = at(0, 0, 0);
+	public static final Point ORIGIN_3 = at(0, 0, 0);
 	
 	/**
 	 * An immutable 2-dimensional double point origin constant
@@ -37,7 +37,9 @@ public final class Points
 	/**
 	 * An immutable 3-dimensional double point origin constant
 	 */
-	public static final PointD ORIGIN_DZ = doubleAt(0, 0, 0);
+	public static final PointD ORIGIN_D3 = doubleAt(0, 0, 0);
+	
+	// CONSTRUCTORS
 	
 	/**
 	 * Returns an immutable 2-dimensional point specified in integer precision.
@@ -266,6 +268,8 @@ public final class Points
 	{
 		return mutableDoubleAt(0, 0, 0);
 	}
+	
+	// QUERIES
 	
 	/**
 	 * Returns true if point <code>p</code> is a 2-dimensional point.

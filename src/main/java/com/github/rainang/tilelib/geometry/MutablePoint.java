@@ -1,71 +1,17 @@
-package com.github.rainang.tilelib.point;
+package com.github.rainang.tilelib.geometry;
 
 import java.util.Arrays;
 
 /**
- A mutable point representing a location in 2- or 3-dimensional space, specified in double precision.
+ A mutable point representing a location in 2- or 3-dimensional space, specified in integer precision.
  *
  * @see Points
  */
-public class MutablePointD extends PointD
+public class MutablePoint extends Point
 {
 	// CONSTRUCTORS
 	
-	/**
-	 Constructs a mutable 2-dimensional point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return a mutable 2-dimensional point
-	 */
-	@Deprecated
-	public static MutablePointD create(double x, double y)
-	{
-		return new MutablePointD(new double[] {
-				x,
-				y
-		});
-	}
-	
-	/**
-	 Constructs a mutable 3-dimensional point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 @param z the z-coordinate
-	 
-	 @return a mutable 3-dimensional point
-	 */
-	@Deprecated
-	public static MutablePointD create(double x, double y, double z)
-	{
-		return new MutablePointD(new double[] {
-				x,
-				y,
-				z
-		});
-	}
-	
-	/**
-	 Constructs a mutable 3-dimensional hex point.
-	 
-	 @param x the x-coordinate
-	 @param y the y-coordinate
-	 
-	 @return a mutable 3-dimensional hex point
-	 */
-	@Deprecated
-	public static MutablePointD createHex(double x, double y)
-	{
-		return new MutablePointD(new double[] {
-				x,
-				y,
-				-x - y
-		});
-	}
-	
-	MutablePointD(double[] array)
+	MutablePoint(int[] array)
 	{
 		super(array);
 	}
@@ -77,9 +23,10 @@ public class MutablePointD extends PointD
 	 
 	 @return an immutable instance of this point
 	 */
-	public PointD asImmutable()
+	@Override
+	public Point asImmutable()
 	{
-		return new PointD(array);
+		return new Point(array);
 	}
 	
 	// SETTERS
@@ -89,9 +36,9 @@ public class MutablePointD extends PointD
 	 
 	 @param x the x-coordinate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD setX(double x)
+	public MutablePoint setX(int x)
 	{
 		array[0] = x;
 		return this;
@@ -102,9 +49,9 @@ public class MutablePointD extends PointD
 	 
 	 @param y the y-coordinate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD setY(double y)
+	public MutablePoint setY(int y)
 	{
 		array[1] = y;
 		return this;
@@ -115,11 +62,11 @@ public class MutablePointD extends PointD
 	 
 	 @param z the z-coordinate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD setZ(double z)
+	public MutablePoint setZ(int z)
 	{
 		array[2] = z;
 		return this;
@@ -130,9 +77,9 @@ public class MutablePointD extends PointD
 	 
 	 @param n the value to set
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD set(double n)
+	public MutablePoint set(int n)
 	{
 		Arrays.fill(array, n);
 		return this;
@@ -144,9 +91,9 @@ public class MutablePointD extends PointD
 	 @param x the x-coordinate
 	 @param y the y-coordinate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD set(double x, double y)
+	public MutablePoint set(int x, int y)
 	{
 		array[0] = x;
 		array[1] = y;
@@ -160,11 +107,11 @@ public class MutablePointD extends PointD
 	 @param y the y-coordinate
 	 @param z the z-coordinate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD set(double x, double y, double z)
+	public MutablePoint set(int x, int y, int z)
 	{
 		array[0] = x;
 		array[1] = y;
@@ -177,11 +124,11 @@ public class MutablePointD extends PointD
 	 
 	 @param p the point to set this point's values to
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
 	 */
-	public MutablePointD set(PointD p)
+	public MutablePoint set(Point p)
 	{
 		System.arraycopy(p.array, 0, array, 0, array.length);
 		return this;
@@ -192,9 +139,9 @@ public class MutablePointD extends PointD
 	/**
 	 Negates the values of this point.
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD negate()
+	public MutablePoint negate()
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] = -array[i];
@@ -206,11 +153,11 @@ public class MutablePointD extends PointD
 	 
 	 @param p the point to add
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
 	 */
-	public MutablePointD add(PointD p)
+	public MutablePoint add(Point p)
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] += p.array[i];
@@ -222,11 +169,11 @@ public class MutablePointD extends PointD
 	 
 	 @param p the point to subtract
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
 	 */
-	public MutablePointD sub(PointD p)
+	public MutablePoint sub(Point p)
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] -= p.array[i];
@@ -238,59 +185,11 @@ public class MutablePointD extends PointD
 	 
 	 @param p the point to multiply
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
 	 */
-	public MutablePointD mul(PointD p)
-	{
-		for (int i = 0; i < array.length; i++)
-			array[i] *= p.array[i];
-		return this;
-	}
-	
-	/**
-	 Adds the values of this point by the specified point <code>p</code>.
-	 
-	 @param p the point to add
-	 
-	 @return this <code>MutablePointD</code>
-	 
-	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
-	 */
-	public MutablePointD add(Point p)
-	{
-		for (int i = 0; i < array.length; i++)
-			array[i] += p.array[i];
-		return this;
-	}
-	
-	/**
-	 Subtracts the values of this point by the specified point <code>p</code>.
-	 
-	 @param p the point to subtract
-	 
-	 @return this <code>MutablePointD</code>
-	 
-	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
-	 */
-	public MutablePointD sub(Point p)
-	{
-		for (int i = 0; i < array.length; i++)
-			array[i] += p.array[i];
-		return this;
-	}
-	
-	/**
-	 Multiplies the values of this point by the specified point <code>p</code>.
-	 
-	 @param p the point to multiply
-	 
-	 @return this <code>MutablePointD</code>
-	 
-	 @throws ArrayIndexOutOfBoundsException if this is a 3-dimensional point and <code>p</code> is not
-	 */
-	public MutablePointD mul(Point p)
+	public MutablePoint mul(Point p)
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] *= p.array[i];
@@ -302,9 +201,9 @@ public class MutablePointD extends PointD
 	 
 	 @param x the x translation
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD translateX(double x)
+	public MutablePoint translateX(int x)
 	{
 		array[0] += x;
 		return this;
@@ -315,9 +214,9 @@ public class MutablePointD extends PointD
 	 
 	 @param y the y translation
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD translateY(double y)
+	public MutablePoint translateY(int y)
 	{
 		array[1] += y;
 		return this;
@@ -328,11 +227,11 @@ public class MutablePointD extends PointD
 	 
 	 @param z the z translation
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD translateZ(double z)
+	public MutablePoint translateZ(int z)
 	{
 		array[2] += z;
 		return this;
@@ -343,9 +242,9 @@ public class MutablePointD extends PointD
 	 
 	 @param n the value to translate
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD translate(double n)
+	public MutablePoint translate(int n)
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] += n;
@@ -358,9 +257,9 @@ public class MutablePointD extends PointD
 	 @param x the x translation
 	 @param y the y translation
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD translate(double x, double y)
+	public MutablePoint translate(int x, int y)
 	{
 		array[0] += x;
 		array[1] += y;
@@ -374,11 +273,11 @@ public class MutablePointD extends PointD
 	 @param y the y translation
 	 @param z the z translation
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD translate(double x, double y, double z)
+	public MutablePoint translate(int x, int y, int z)
 	{
 		array[0] += x;
 		array[1] += y;
@@ -391,9 +290,9 @@ public class MutablePointD extends PointD
 	 
 	 @param x the x scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD scaleX(double x)
+	public MutablePoint scaleX(int x)
 	{
 		array[0] *= x;
 		return this;
@@ -404,9 +303,9 @@ public class MutablePointD extends PointD
 	 
 	 @param y the y scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD scaleY(double y)
+	public MutablePoint scaleY(int y)
 	{
 		array[1] *= y;
 		return this;
@@ -417,11 +316,11 @@ public class MutablePointD extends PointD
 	 
 	 @param z the z scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD scaleZ(double z)
+	public MutablePoint scaleZ(int z)
 	{
 		array[2] *= z;
 		return this;
@@ -432,9 +331,9 @@ public class MutablePointD extends PointD
 	 
 	 @param n the value to scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD scale(double n)
+	public MutablePoint scale(int n)
 	{
 		for (int i = 0; i < array.length; i++)
 			array[i] *= n;
@@ -447,9 +346,9 @@ public class MutablePointD extends PointD
 	 @param x the x scale
 	 @param y the y scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 */
-	public MutablePointD scale(double x, double y)
+	public MutablePoint scale(int x, int y)
 	{
 		array[0] *= x;
 		array[1] *= y;
@@ -463,11 +362,11 @@ public class MutablePointD extends PointD
 	 @param y the y scale
 	 @param z the z scale
 	 
-	 @return this <code>MutablePointD</code>
+	 @return this <code>MutablePoint</code>
 	 
 	 @throws ArrayIndexOutOfBoundsException if this is a 2-dimensional point
 	 */
-	public MutablePointD scale(double x, double y, double z)
+	public MutablePoint scale(int x, int y, int z)
 	{
 		array[0] *= x;
 		array[1] *= y;
