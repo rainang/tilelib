@@ -1,4 +1,4 @@
-package com.github.rainang.tilelib.layout;
+package com.github.rainang.tilelib.tile.layout;
 
 import static java.lang.Math.sqrt;
 
