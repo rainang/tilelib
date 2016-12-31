@@ -1,10 +1,10 @@
 package com.github.rainang.tilelib.tile.layout;
 
-import com.github.rainang.tilelib.board.tile.TileShape;
 import com.github.rainang.tilelib.geometry.MutablePoint;
 import com.github.rainang.tilelib.geometry.MutablePointD;
 import com.github.rainang.tilelib.geometry.Point;
 import com.github.rainang.tilelib.geometry.PointD;
+import com.github.rainang.tilelib.tile.TileShape;
 
 import java.util.function.BiConsumer;
 

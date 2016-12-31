@@ -1,16 +1,16 @@
 package com.github.rainang.tilelib.tile.layout;
 
-import com.github.rainang.tilelib.board.tile.TileShape;
 import com.github.rainang.tilelib.geometry.MutablePoint;
 import com.github.rainang.tilelib.geometry.MutablePointD;
 import com.github.rainang.tilelib.geometry.Point;
 import com.github.rainang.tilelib.geometry.PointD;
 import com.github.rainang.tilelib.geometry.Points;
-import com.github.rainang.tilelib.util.HexFinder;
+import com.github.rainang.tilelib.tile.HexFinder;
+import com.github.rainang.tilelib.tile.TileShape;
 
 import java.util.function.BiFunction;
 
-public class HexLayout extends AbstractLayout
+public final class HexLayout extends AbstractLayout
 {
 	private final HexOrientation orientation;
 	

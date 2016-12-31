@@ -1,7 +1,7 @@
-package com.github.rainang.tilelib.board.tile;
+package com.github.rainang.tilelib.tile;
 
-import com.github.rainang.tilelib.point.Point;
-import com.github.rainang.tilelib.point.Points;
+import com.github.rainang.tilelib.geometry.Point;
+import com.github.rainang.tilelib.geometry.Points;
 
 public enum TileShape
 {

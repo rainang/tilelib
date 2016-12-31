@@ -1,8 +1,8 @@
 package com.github.rainang.tilelib.tile.layout;
 
-import com.github.rainang.tilelib.board.tile.TileShape;
 import com.github.rainang.tilelib.geometry.PointD;
 import com.github.rainang.tilelib.geometry.Points;
+import com.github.rainang.tilelib.tile.TileShape;
 
 public final class QuadLayout extends AbstractLayout
 {

@@ -1,6 +1,6 @@
-package com.github.rainang.tilelib.board.tile;
+package com.github.rainang.tilelib.tile;
 
-import com.github.rainang.tilelib.point.Point;
+import com.github.rainang.tilelib.geometry.Point;
 
 public class Tile
 {
