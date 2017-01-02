@@ -9,27 +9,22 @@ import java.util.Arrays;
  */
 public class MutablePointD extends PointD
 {
-	// CONSTRUCTORS
+	// Constructors
 	
 	MutablePointD(double[] array)
 	{
 		super(array);
 	}
 	
-	// VIEWS
+	// Views
 	
-	/**
-	 Returns an immutable instance of this point.
-	 
-	 @return an immutable instance of this point
-	 */
 	@Override
 	public PointD asImmutable()
 	{
 		return new PointD(array);
 	}
 	
-	// SETTERS
+	// Setters
 	
 	/**
 	 Sets the x-coordinate.
@@ -134,7 +129,7 @@ public class MutablePointD extends PointD
 		return this;
 	}
 	
-	// OPERATIONS
+	// Operations
 	
 	/**
 	 Negates the values of this point.
@@ -422,7 +417,7 @@ public class MutablePointD extends PointD
 		return this;
 	}
 	
-	// OVERRIDES
+	// Overrides
 	
 	@Override
 	public String toString()

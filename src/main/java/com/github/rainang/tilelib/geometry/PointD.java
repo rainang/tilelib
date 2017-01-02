@@ -11,14 +11,14 @@ public class PointD
 {
 	final double[] array;
 	
-	// CONSTRUCTORS
+	// Constructors
 	
 	PointD(double[] array)
 	{
 		this.array = Arrays.copyOf(array, array.length);
 	}
 	
-	// VIEWS
+	// Views
 	
 	/**
 	 * Returns an immutable instance of this point.
@@ -66,7 +66,7 @@ public class PointD
 		return new MutablePoint(a);
 	}
 	
-	// GETTERS
+	// Getters
 	
 	/**
 	 * Returns the x-coordinate of this point.
@@ -100,7 +100,7 @@ public class PointD
 		return array[2];
 	}
 	
-	// OVERRIDES
+	// Overrides
 	
 	// TODO: 2016-12-31 Fix hashing for 3-dimensional point
 	@Override

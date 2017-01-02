@@ -39,7 +39,7 @@ public final class Points
 	 */
 	public static final PointD ORIGIN_D3 = doubleAt(0, 0, 0);
 	
-	// CONSTRUCTORS
+	// Constructors
 	
 	/**
 	 * Returns an immutable 2-dimensional point specified in integer precision.
@@ -269,7 +269,7 @@ public final class Points
 		return mutableDoubleAt(0, 0, 0);
 	}
 	
-	// QUERIES
+	// Queries
 	
 	/**
 	 * Returns true if point <code>p</code> is a 2-dimensional point.
