@@ -41,9 +41,9 @@ public class HexFinder extends PointFinder
 	{
 		for (int j = 0; j <= length; j++)
 		{
-			offset(temp[0].set(p), clamp(direction + 1), j);
+			lateralOf(temp[0].set(p), clamp(direction + 1), j);
 			for (int i = 0; i <= length - j; i++)
-				consumer.accept(offset(temp[1].set(temp[0]), direction, i));
+				consumer.accept(lateralOf(temp[1].set(temp[0]), direction, i));
 		}
 	}
 	
@@ -80,14 +80,14 @@ public class HexFinder extends PointFinder
 	
 	public void ring(Point p, int direction, int radius, Consumer<MutablePoint> consumer)
 	{
-		offset(temp[0].set(p), direction, radius);
+		lateralOf(temp[0].set(p), direction, radius);
 		for (int i = 0; i < 6; i++)
 		{
 			int k = clamp(i + direction + 2);
 			for (int j = 0; j < radius; j++)
 			{
 				consumer.accept(temp[0]);
-				offset(temp[0], k);
+				lateralOf(temp[0], k);
 			}
 		}
 	}
@@ -104,9 +104,9 @@ public class HexFinder extends PointFinder
 		for (int j = 0; j <= l2; j++)
 		{
 			for (int i = 0; i <= l1; i++)
-				consumer.accept(offset(temp[1].set(temp[0]), direction, i));
+				consumer.accept(lateralOf(temp[1].set(temp[0]), direction, i));
 			int k = j % 2 + 1 + direction;
-			offset(temp[0], clamp(k));
+			lateralOf(temp[0], clamp(k));
 		}
 	}
 	

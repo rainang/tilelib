@@ -39,20 +39,36 @@ public abstract class PointFinder
 	
 	// OFFSETS
 	
-	public Point offset(int direction)
+	public Point lateral(int direction)
 	{
-		return getTileShape().getOffset(direction);
+		return getTileShape().getLateralOffset(direction);
 	}
 	
-	public MutablePoint offset(MutablePoint p, int direction)
+	public MutablePoint lateralOf(MutablePoint source, int direction)
 	{
-		return p.add(offset(direction));
+		return source.add(lateral(direction));
 	}
 	
-	public MutablePoint offset(MutablePoint p, int direction, int distance)
+	public MutablePoint lateralOf(MutablePoint source, int direction, int distance)
 	{
-		return p.add(offset(direction).asMutable()
-									  .scale(distance));
+		return source.add(lateral(direction).asMutable()
+											.scale(distance));
+	}
+	
+	public Point diagonal(int direction)
+	{
+		return getTileShape().getDiagonalOffset(direction);
+	}
+	
+	public MutablePoint diagonalOf(MutablePoint source, int direction)
+	{
+		return source.add(diagonal(direction));
+	}
+	
+	public MutablePoint diagonalOf(MutablePoint source, int direction, int distance)
+	{
+		return source.add(diagonal(direction).asMutable()
+											 .scale(distance));
 	}
 	
 	// SHAPES
@@ -63,11 +79,11 @@ public abstract class PointFinder
 	{
 		for (int i = 0; i <= length1; i++)
 		{
-			offset(temp[0].set(p), direction, i);
+			lateralOf(temp[0].set(p), direction, i);
 			consumer.accept(temp[0]);
 			for (int j = 1; j <= length2; j++)
 			{
-				offset(temp[0], clamp(direction + 1));
+				lateralOf(temp[0], clamp(direction + 1));
 				consumer.accept(temp[0]);
 			}
 		}

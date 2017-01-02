@@ -34,11 +34,11 @@ public class QuadFinder extends PointFinder
 	{
 		for (int i = 0; i < length1; i++)
 		{
-			offset(temp[0].set(p), direction, i);
+			lateralOf(temp[0].set(p), direction, i);
 			consumer.accept(temp[0]);
 			for (int j = 1; j < length2; j++)
 			{
-				offset(temp[0], clamp(direction + 1));
+				lateralOf(temp[0], clamp(direction + 1));
 				consumer.accept(temp[0]);
 			}
 		}
